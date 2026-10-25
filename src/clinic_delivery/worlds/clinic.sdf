@@ -1,0 +1,218 @@
+<?xml version="1.0"?>
+<!--
+  診療所ワールド（8m x 6m、Gazebo Fortress用）
+    左側        : 受付・待合（青マーカー、ロボットの出発点）
+    右上・左    : 診察室（緑マーカー）
+    右上・右    : 処置室（橙マーカー）
+    右下        : 検査室（赤マーカー）
+    中央の横通路: 廊下（y = -0.75〜0.75）
+  各部屋の扉幅は 0.8 m（ロボット幅 0.21 m）
+-->
+<sdf version="1.8">
+  <world name="clinic">
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <plugin filename="libignition-gazebo-physics-system.so" name="ignition::gazebo::systems::Physics"/>
+    <plugin filename="libignition-gazebo-user-commands-system.so" name="ignition::gazebo::systems::UserCommands"/>
+    <plugin filename="libignition-gazebo-scene-broadcaster-system.so" name="ignition::gazebo::systems::SceneBroadcaster"/>
+    <!-- LiDAR に必要。GPUのない環境（ブラウザ経由の画面）でも動くよう ogre を指定 -->
+    <plugin filename="libignition-gazebo-sensors-system.so" name="ignition::gazebo::systems::Sensors">
+      <render_engine>ogre</render_engine>
+    </plugin>
+
+    <light type="directional" name="sun">
+      <cast_shadows>false</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.9 0.9 0.9 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision"><geometry><plane><normal>0 0 1</normal></plane></geometry></collision>
+        <visual name="visual"><geometry><plane><normal>0 0 1</normal><size>20 20</size></plane></geometry>
+          <material><ambient>0.7 0.7 0.7 1</ambient><diffuse>0.7 0.7 0.7 1</diffuse></material></visual>
+      </link>
+    </model>
+
+    <model name="outer_north">
+      <static>true</static>
+      <pose>0 3 0.4 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>8.1 0.1 0.8</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>8.1 0.1 0.8</size></box></geometry>
+          <material><ambient>0.85 0.85 0.8 1</ambient><diffuse>0.85 0.85 0.8 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="outer_south">
+      <static>true</static>
+      <pose>0 -3 0.4 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>8.1 0.1 0.8</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>8.1 0.1 0.8</size></box></geometry>
+          <material><ambient>0.85 0.85 0.8 1</ambient><diffuse>0.85 0.85 0.8 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="outer_west">
+      <static>true</static>
+      <pose>-4 0 0.4 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>0.1 6.1 0.8</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>0.1 6.1 0.8</size></box></geometry>
+          <material><ambient>0.85 0.85 0.8 1</ambient><diffuse>0.85 0.85 0.8 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="outer_east">
+      <static>true</static>
+      <pose>4 0 0.4 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>0.1 6.1 0.8</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>0.1 6.1 0.8</size></box></geometry>
+          <material><ambient>0.85 0.85 0.8 1</ambient><diffuse>0.85 0.85 0.8 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="reception_wall_n">
+      <static>true</static>
+      <pose>-1 1.75 0.4 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>0.1 2.5 0.8</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>0.1 2.5 0.8</size></box></geometry>
+          <material><ambient>0.85 0.85 0.8 1</ambient><diffuse>0.85 0.85 0.8 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="reception_wall_s">
+      <static>true</static>
+      <pose>-1 -1.75 0.4 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>0.1 2.5 0.8</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>0.1 2.5 0.8</size></box></geometry>
+          <material><ambient>0.85 0.85 0.8 1</ambient><diffuse>0.85 0.85 0.8 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="corridor_n_1">
+      <static>true</static>
+      <pose>-0.5 0.75 0.4 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>1.0 0.1 0.8</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>1.0 0.1 0.8</size></box></geometry>
+          <material><ambient>0.85 0.85 0.8 1</ambient><diffuse>0.85 0.85 0.8 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="corridor_n_2">
+      <static>true</static>
+      <pose>1.65 0.75 0.4 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>1.7 0.1 0.8</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>1.7 0.1 0.8</size></box></geometry>
+          <material><ambient>0.85 0.85 0.8 1</ambient><diffuse>0.85 0.85 0.8 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="corridor_n_3">
+      <static>true</static>
+      <pose>3.65 0.75 0.4 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>0.7 0.1 0.8</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>0.7 0.1 0.8</size></box></geometry>
+          <material><ambient>0.85 0.85 0.8 1</ambient><diffuse>0.85 0.85 0.8 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="exam_treat_wall">
+      <static>true</static>
+      <pose>1.5 1.875 0.4 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>0.1 2.25 0.8</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>0.1 2.25 0.8</size></box></geometry>
+          <material><ambient>0.85 0.85 0.8 1</ambient><diffuse>0.85 0.85 0.8 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="corridor_s_1">
+      <static>true</static>
+      <pose>0 -0.75 0.4 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>2.0 0.1 0.8</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>2.0 0.1 0.8</size></box></geometry>
+          <material><ambient>0.85 0.85 0.8 1</ambient><diffuse>0.85 0.85 0.8 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="corridor_s_2">
+      <static>true</static>
+      <pose>2.9 -0.75 0.4 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>2.2 0.1 0.8</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>2.2 0.1 0.8</size></box></geometry>
+          <material><ambient>0.85 0.85 0.8 1</ambient><diffuse>0.85 0.85 0.8 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="bench_1">
+      <static>true</static>
+      <pose>-3.2 1.8 0.4 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>1.2 0.4 0.8</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>1.2 0.4 0.8</size></box></geometry>
+          <material><ambient>0.85 0.85 0.8 1</ambient><diffuse>0.85 0.85 0.8 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="bench_2">
+      <static>true</static>
+      <pose>-3.2 -1.8 0.4 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>1.2 0.4 0.8</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>1.2 0.4 0.8</size></box></geometry>
+          <material><ambient>0.85 0.85 0.8 1</ambient><diffuse>0.85 0.85 0.8 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="lab_table">
+      <static>true</static>
+      <pose>3.0 -2.3 0.4 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>1.2 0.6 0.8</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>1.2 0.6 0.8</size></box></geometry>
+          <material><ambient>0.85 0.85 0.8 1</ambient><diffuse>0.85 0.85 0.8 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="station_reception">
+      <static>true</static>
+      <pose>-2.5 0.0 0.001 0 0 0</pose>
+      <link name="link">
+        <visual name="visual"><geometry><cylinder><radius>0.3</radius><length>0.002</length></cylinder></geometry>
+          <material><ambient>0.2 0.6 1.0 1</ambient><diffuse>0.2 0.6 1.0 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="station_exam">
+      <static>true</static>
+      <pose>0.4 1.9 0.001 0 0 0</pose>
+      <link name="link">
+        <visual name="visual"><geometry><cylinder><radius>0.3</radius><length>0.002</length></cylinder></geometry>
+          <material><ambient>0.2 0.8 0.3 1</ambient><diffuse>0.2 0.8 0.3 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="station_treatment">
+      <static>true</static>
+      <pose>2.9 1.9 0.001 0 0 0</pose>
+      <link name="link">
+        <visual name="visual"><geometry><cylinder><radius>0.3</radius><length>0.002</length></cylinder></geometry>
+          <material><ambient>1.0 0.7 0.1 1</ambient><diffuse>1.0 0.7 0.1 1</diffuse></material></visual>
+      </link>
+    </model>
+    <model name="station_lab">
+      <static>true</static>
+      <pose>1.4 -1.9 0.001 0 0 0</pose>
+      <link name="link">
+        <visual name="visual"><geometry><cylinder><radius>0.3</radius><length>0.002</length></cylinder></geometry>
+          <material><ambient>0.9 0.2 0.2 1</ambient><diffuse>0.9 0.2 0.2 1</diffuse></material></visual>
+      </link>
+    </model>
+
+    <!-- 搬送ロボット（受付から出発） -->
+    <include>
+      <uri>model://delivery_bot</uri>
+      <name>delivery_bot</name>
+      <pose>-2.5 0 0 0 0 0</pose>
+    </include>
+  </world>
+</sdf>
